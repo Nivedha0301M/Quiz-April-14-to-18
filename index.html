@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz</title>
+
+<style>
+body { font-family: Arial; margin: 20px; }
+.question { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 10px; }
+.option { display: block; margin: 5px 0; padding: 8px; border: 1px solid #aaa; cursor: pointer; border-radius: 5px; }
+.option:hover { background-color: #f0f0f0; }
+.correct { background-color: #c8f7c5; }
+.wrong { background-color: #f7c5c5; }
+#timer { font-size: 20px; font-weight: bold; }
+</style>
+</head>
+
+<body>
+
+<h2>Quiz</h2>
+<div id="timer">Time Left: 15:00</div>
+<br>
+
+<div id="quiz"></div>
+
+<br>
+<button onclick="submitQuiz()">Submit</button>
+
+<h3 id="result"></h3>
+
+<script>
+
+const questions = [
+
+{q:`The updated edition of the Constitution of India in Sindhi language, released by Vice President C. P. Radhakrishnan, includes which of the following script combinations across its editions?`, options:["Roman (1st) and Devanagari (2nd)","Devanagari (1st) and Persian (2nd)","Persian (1st) and Roman (2nd)","Gurmukhi (1st) and Devanagari (2nd)"], answer:1},
+
+{q:`The release of the updated Sindhi Constitution edition coincided with which specific observance?`, options:["International Mother Language Day","Hindi Diwas","Sindhi Language Day (Sindhi Bhasha Diwas)","National Integration Day"], answer:2},
+
+{q:`The MoU between Doordarshan (DD) and ICCR primarily focuses on:`, options:["Satellite broadcasting expansion","Film certification reforms","Promotion of Indian art and culture globally","Digital news regulation"], answer:2},
+
+{q:`The MoU signed between Doordarshan and ICCR is valid for a period of:`, options:["2 years","3 years","5 years","10 years"], answer:1},
+
+{q:`The Indo-Taiwan Industrial Park project in Gujarat is proposed in which region?`, options:["Gandhinagar–Vadodara","Surat–Hazira","Sanand–Dholera","Rajkot–Morbi"], answer:2},
+
+{q:`The Indo-Taiwan Industrial Park initiative primarily aims to strengthen which sector?`, options:["Textile manufacturing","Semiconductor and electronics ecosystem","Automobile exports","Agricultural processing"], answer:1},
+
+{q:`HUDCO and NBCC signed MoUs related to redevelopment and asset monetisation, including redevelopment of land measuring:`, options:["10,500 sq. m","18,830 sq. m","25,000 sq. m","32,100 sq. m"], answer:1},
+
+{q:`The joint military exercise ‘DUSTLIK 2026’ between India and Uzbekistan was conducted in:`, options:["Tashkent","Samarkand","Namangan","Bukhara"], answer:2},
+
+{q:`The total Indian contingent participating in Exercise DUSTLIK 2026 consisted of:`, options:["50 personnel","60 personnel","70 personnel","80 personnel"], answer:1},
+
+{q:`The India–Myanmar MoU for school construction is aligned with which policy?`, options:["Act East Policy","Neighbourhood First Policy","Look West Policy","Indo-Pacific Strategy"], answer:1},
+
+{q:`RBI’s ‘Utkarsh 2029’ strategy covers how many pillars?`, options:["4","5","6","7"], answer:2},
+
+{q:`Project ‘Sa-Mudra’ under RBI’s Utkarsh 2029 relates to:`, options:["Digital lending","Currency management modernization","Cybersecurity","Financial inclusion"], answer:1},
+
+{q:`SEBI’s SUPCOMS 2.1 platform replaces which traditional system?`, options:["Manual filing","Postal communication","Email-based communication","Telephonic communication"], answer:2},
+
+{q:`Paytm’s biometric UPI feature aligns with RBI’s new authentication rules introduced from:`, options:["March 1, 2026","April 1, 2026","May 1, 2026","June 1, 2026"], answer:1},
+
+{q:`The ISO 15189:2022 accreditation received by CARI Bengaluru is associated with:`, options:["Environmental testing","Food safety","Medical laboratory standards","Industrial certification"], answer:2},
+
+{q:`Ismaïl Omar Guelleh was re-elected President of Djibouti for the:`, options:["4th term","5th term","6th term","7th term"], answer:2},
+
+{q:`NASA’s Artemis II mission used which spacecraft?`, options:["Dragon","Starliner","Orion","Apollo"], answer:2},
+
+{q:`The Asian Wrestling Championships 2026 were held in:`, options:["Almaty","Bishkek","Tashkent","Astana"], answer:1},
+
+{q:`India secured which rank in the Asian Wrestling Championships 2026?`, options:["3rd","4th","5th","6th"], answer:2},
+
+{q:`The Asian Boxing Championships 2026 took place in:`, options:["Beijing","Ulaanbaatar","Tokyo","Seoul"], answer:1},
+
+{q:`National Safe Motherhood Day is observed on:`, options:["April 10","April 11","April 12","April 13"], answer:1},
+
+{q:`World Parkinson’s Day commemorates the birth anniversary of:`, options:["Edward Jenner","James Parkinson","Alexander Fleming","Louis Pasteur"], answer:1},
+
+{q:`The Delhi–Dehradun Economic Corridor spans approximately:`, options:["150 km","180 km","213 km","250 km"], answer:2},
+
+{q:`Startup India Fund of Funds 2.0 has a total corpus of:`, options:["₹5,000 crore","₹7,500 crore","₹10,000 crore","₹15,000 crore"], answer:2},
+
+{q:`SIDBI acts as the implementation agency for which initiative?`, options:["Make in India","Startup India FoF 2.0","Digital India","Stand Up India"], answer:1},
+
+{q:`Amaravati Quantum Reference Facility operates near:`, options:["0°C","−100°C","−273°C","−150°C"], answer:2},
+
+{q:`NITI Aayog’s reports on R&D focus on which pillars?`, options:["Trade and finance","Governance, funding, regulation, and translation","Infrastructure and logistics","Defense and security"], answer:1},
+
+{q:`The MoU between DoP and PMML was signed to preserve:`, options:["Cultural heritage","Postal history","Democratic heritage","Economic archives"], answer:2},
+
+{q:`The NCS portal is associated with which ministry?`, options:["Finance","Labour & Employment","Commerce","IT"], answer:1},
+
+{q:`‘Radio Sikkim Sundari’ operates at which frequency?`, options:["88.4 FM","89.6 FM","90.2 FM","91.1 FM"], answer:0},
+
+{q:`The F404 engine depot facility is being set up with which company?`, options:["Boeing","Airbus","GE Aerospace","Lockheed Martin"], answer:2},
+
+{q:`The 9th Indian Ocean Conference 2026 was held in:`, options:["Colombo","Port Louis","Male","Jakarta"], answer:1},
+
+{q:`UPI transactions in 2025 reached approximately:`, options:["150 billion","200 billion","228.5 billion","300 billion"], answer:2},
+
+{q:`The FIFA World Cup 2026 Pixel Credit Card is launched by HDFC Bank in partnership with:`, options:["Mastercard","Visa","PayPal","RuPay"], answer:1},
+
+{q:`India’s top trade partner in FY26 was:`, options:["USA","China","UAE","Germany"], answer:1},
+
+{q:`Samrat Choudhary became the Chief Minister of:`, options:["Jharkhand","Bihar","Uttar Pradesh","Madhya Pradesh"], answer:1},
+
+{q:`Infosys appointed which tennis player as Global Brand Ambassador?`, options:["Novak Djokovic","Rafael Nadal","Carlos Alcaraz","Daniil Medvedev"], answer:2},
+
+{q:`ISSF World Cup 2026 (Granada) was held in:`, options:["Italy","Spain","France","Germany"], answer:1},
+
+{q:`R. Vaishali won which tournament?`, options:["Chess Olympiad","FIDE Candidates","World Rapid Championship","Asian Games"], answer:1},
+
+{q:`Siachen Day commemorates which operation?`, options:["Operation Vijay","Operation Meghdoot","Operation Parakram","Operation Rakshak"], answer:1},
+
+{q:`The Jallianwala Bagh Massacre took place in:`, options:["1915","1917","1919","1921"], answer:2},
+
+{q:`India’s first chip fabrication plant is located at:`, options:["Noida","Bengaluru","Dholera SEZ","Hyderabad"], answer:2},
+
+{q:`AIGEG was constituted under which ministry?`, options:["MeitY","MoF","MoD","MoC&I"], answer:0},
+
+{q:`FIU-India signed MoUs with which organizations?`, options:["RBI & NABARD","SEBI & PFRDA","LIC & SIDBI","IRDAI & NABARD"], answer:1},
+
+{q:`India’s GDP ranking slipped to which position as per IMF WEO 2026?`, options:["4th","5th","6th","7th"], answer:2},
+
+{q:`WEF projected global GDP growth over the next five years at:`, options:["USD 30 trillion","USD 40 trillion","USD 56 trillion","USD 70 trillion"], answer:2},
+
+{q:`‘Water Forward’ initiative aims to benefit how many people by 2030?`, options:["500 million","750 million","1 billion","1.5 billion"], answer:2},
+
+{q:`Gautam Adani surpassed Mukesh Ambani as Asia’s richest person according to:`, options:["Forbes","IMF","Bloomberg Billionaires Index","World Bank"], answer:2},
+
+{q:`ISRO’s SAC signed an MoU with ATREE for:`, options:["Space missions","Climate modeling","Sustainable land management","Satellite launch"], answer:2},
+
+{q:`The gecko species ‘Cyrtodactylus raimonaensis’ was discovered in:`, options:["Meghalaya","Assam","Arunachal Pradesh","Nagaland"], answer:1},
+
+{q:`‘Calamaria garoensis’ belongs to which category?`, options:["Amphibian","Bird","Snake","Mammal"], answer:2},
+
+{q:`World Chagas Disease Day is observed on:`, options:["April 12","April 13","April 14","April 15"], answer:2},
+
+{q:`National Fire Service Day is linked to which incident?`, options:["Bhopal Gas Tragedy","Bombay Dock Explosion","Surat Fire","Uphaar Fire"], answer:1},
+
+{q:`Odisha’s MSP initiative is under collaboration with:`, options:["UNEP","Norway","Sweden","Japan"], answer:1},
+
+{q:`‘Samudra Sahas’ expedition was flagged off by:`, options:["Indian Navy","Indian Coast Guard","Indian Army","DRDO"], answer:2},
+
+{q:`The BE-JTO project relates to:`, options:["Missile systems","Hybrid propulsion take-off","Drone delivery","Satellite launch"], answer:1},
+
+{q:`DoT–SEBI MoU focuses on:`, options:["Cyber warfare","Telecom licensing","Financial fraud via telecom misuse","Satellite spectrum"], answer:2},
+
+{q:`TIME 100 list 2026 included how many Indians?`, options:["2","3","4","5"], answer:1},
+
+{q:`India–Germany diplomatic ties celebrated how many years?`, options:["50","60","75","100"], answer:2},
+
+{q:`Patent filings in India increased by approximately:`, options:["20%","25%","30.2%","35%"], answer:2}
+
+];
+
+// =======================
+// QUIZ LOGIC
+// =======================
+
+let score = 0;
+let answered = new Array(questions.length).fill(false);
+
+function loadQuiz() {
+    const quizDiv = document.getElementById("quiz");
+
+    questions.forEach((item, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.classList.add("question");
+
+        qDiv.innerHTML = `<b>Q${index+1}. ${item.q}</b>`;
+
+        item.options.forEach((opt, i) => {
+            const optBtn = document.createElement("div");
+            optBtn.classList.add("option");
+            optBtn.innerText = opt;
+
+            optBtn.onclick = () => checkAnswer(index, i, optBtn, qDiv);
+
+            qDiv.appendChild(optBtn);
+        });
+
+        quizDiv.appendChild(qDiv);
+    });
+}
+
+function checkAnswer(qIndex, selected, element, qDiv) {
+
+    if (answered[qIndex]) return; // 🔒 Restriction
+
+    answered[qIndex] = true;
+
+    const correct = questions[qIndex].answer;
+    const options = qDiv.querySelectorAll(".option");
+
+    if (selected === correct) {
+        element.classList.add("correct");
+        element.innerHTML += " ✔ Correct";
+        score += 1;
+    } else {
+        element.classList.add("wrong");
+        element.innerHTML += " ❌ Wrong";
+        score -= 0.25;
+
+        // show correct answer
+        options[correct].classList.add("correct");
+        options[correct].innerHTML += " ✔ Correct Answer";
+    }
+
+    // disable all options
+    options.forEach(opt => opt.style.pointerEvents = "none");
+}
+
+let quizSubmitted = false;
+
+function submitQuiz() {
+    if (quizSubmitted) return;
+
+    quizSubmitted = true;
+    clearInterval(timer); // stop timer
+
+    document.getElementById("result").innerText =
+        "Final Score: " + score.toFixed(2);
+
+    // disable all options
+    document.querySelectorAll(".option").forEach(opt => {
+        opt.style.pointerEvents = "none";
+    });
+
+}
+
+// =======================
+// TIMER (30 mins)
+// =======================
+
+let time = 1800; // 30 min
+
+const timer = setInterval(() => {
+    let min = Math.floor(time / 60);
+    let sec = time % 60;
+
+    document.getElementById("timer").innerText =
+        `Time Left: ${min}:${sec < 10 ? '0'+sec : sec}`;
+
+    time--;
+
+    if (time <= 0) {
+        clearInterval(timer);
+        alert("Time's up! Auto submitting...");
+        submitQuiz();
+    }
+
+}, 1000);
+
+// =======================
+
+loadQuiz();
+
+</script>
+
+</body>
+</html>
